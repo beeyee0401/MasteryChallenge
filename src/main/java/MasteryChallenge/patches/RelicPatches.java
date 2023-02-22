@@ -49,11 +49,11 @@ public class RelicPatches {
             }
 
             // This is only the run history screen (as far as I know smiley face)
-//            if (c[0] == Settings.TWO_THIRDS_TRANSPARENT_BLACK_COLOR) {
-//                if (MasteryChallenge.relicAndRunMap.get(__instance.relicId).equals(RunHistoryScreenPatch.currentRunTimestamp)){
-//                    c[0] = Settings.GREEN_RELIC_COLOR;
-//                }
-//            }
+            if (c[0] == Settings.TWO_THIRDS_TRANSPARENT_BLACK_COLOR) {
+                if (MasteryChallenge.relicAndRunMap.get(__instance.relicId).equals(RunHistoryScreenPatch.currentRunTimestamp)){
+                    c[0] = Settings.GREEN_RELIC_COLOR;
+                }
+            }
         }
 
         private static class Locator extends SpireInsertLocator {
