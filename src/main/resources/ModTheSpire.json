@@ -1,0 +1,10 @@
+{
+  "modid": "beeyee_MasteryChallenge",
+  "name": "Mastery Challenge",
+  "author_list": ["beeyee"],
+  "description": "For Baalorlord's 2023 Challenge of Mastering cards and relics",
+  "version": "0.0.1",
+  "sts_version": "12-18-2022",
+  "mts_version": "3.19.0",
+  "dependencies": ["basemod"]
+}
