@@ -10,7 +10,6 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.SingleRelicViewPopup;
-import com.megacrit.cardcrawl.screens.runHistory.RunHistoryScreen;
 import javassist.CannotCompileException;
 import javassist.CtBehavior;
 

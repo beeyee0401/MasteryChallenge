@@ -15,8 +15,8 @@ import com.megacrit.cardcrawl.screens.MasterDeckViewScreen;
 import java.util.HashMap;
 
 public class DeckScreenPatch {
-    private static HashMap<String, String> cards = new HashMap<>();
-    private static HashMap<String, String> relics = new HashMap<>();
+    private static final HashMap<String, String> cards = new HashMap<>();
+    private static final HashMap<String, String> relics = new HashMap<>();
 
     @SpirePatch(clz = MasterDeckViewScreen.class, method = "render")
     public static class RenderMasteryCandidates {

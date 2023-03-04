@@ -3,29 +3,21 @@ package MasteryChallenge.patches;
 import MasteryChallenge.MasteryChallenge;
 import basemod.ReflectionHacks;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.evacipated.cardcrawl.modthespire.patcher.PatchingException;
-import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
-import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.runHistory.RunHistoryScreen;
 import com.megacrit.cardcrawl.screens.runHistory.TinyCard;
 import com.megacrit.cardcrawl.screens.stats.RunData;
 import javassist.CannotCompileException;
 import javassist.CtBehavior;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 
 public class RunHistoryScreenPatch {
     public static String currentRunTimestamp = null;
@@ -48,6 +40,14 @@ public class RunHistoryScreenPatch {
         @SpirePostfixPatch
         public static void setCurrentRun(RunHistoryScreen __instance) {
             currentRunTimestamp = null;
+        }
+    }
+
+    @SpirePatch2(clz = RunHistoryScreen.class, method = "reloadWithRunData")
+    public static class ClearCardDisplayStringToCardId {
+        @SpirePostfixPatch
+        public static void patch(RunHistoryScreen __instance, RunData runData) {
+            cardDisplayStringToCardId.clear();
         }
     }
 
