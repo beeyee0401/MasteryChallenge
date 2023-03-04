@@ -54,15 +54,6 @@ public class RelicPatches {
                 }
             }
         }
-
-        private static class Locator extends SpireInsertLocator {
-            public int[] Locate (CtBehavior ctMethodToPatch) throws CannotCompileException, PatchingException {
-                Matcher finalMatcher = new Matcher.FieldAccessMatcher(AbstractRelic.class, "PASSIVE_OUTLINE_COLOR");
-                int[] lines = LineFinder.findInOrder(ctMethodToPatch, finalMatcher);
-                lines[0]++;
-                return lines;
-            }
-        }
     }
 
     @SpirePatch2(clz = SingleRelicViewPopup.class, method = "renderRarity")
