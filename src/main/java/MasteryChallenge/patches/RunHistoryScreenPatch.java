@@ -51,16 +51,14 @@ public class RunHistoryScreenPatch {
         }
     }
 
-    @SpirePatch2(clz = TinyCard.class, method = "render")
+    @SpirePatch2(clz = TinyCard.class, method = "getText")
     public static class ShowCardMasteriesInHistoryPatch {
-        @SpireInsertPatch(
-            rloc = 74-67,
-            localvars = {"text"}
-        )
-        public static void mapMessageToCardId(TinyCard __instance, SpriteBatch sb, String text) {
+        @SpirePostfixPatch
+        public static String mapMessageToCardId(String __result, TinyCard __instance) {
             if (MasteryChallenge.cardAndRunMap.getOrDefault(__instance.card.cardID, "").equals(currentRunTimestamp)){
-                cardDisplayStringToCardId.put(text, __instance.card.cardID);
+                cardDisplayStringToCardId.put(__result, __instance.card.cardID);
             }
+            return __result;
         }
     }
 
