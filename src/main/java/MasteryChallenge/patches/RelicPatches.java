@@ -49,9 +49,9 @@ public class RelicPatches {
             }
 
             // This is only the run history screen (as far as I know smiley face)
-            if (c[0] == Settings.TWO_THIRDS_TRANSPARENT_BLACK_COLOR) {
+            if (c[0] == Settings.TWO_THIRDS_TRANSPARENT_BLACK_COLOR && RunHistoryScreenPatch.currentRunTimestamp != null) {
                 if (MasteryChallenge.relicAndRunMap.get(__instance.relicId).equals(RunHistoryScreenPatch.currentRunTimestamp)){
-                    c[0] = Settings.GREEN_RELIC_COLOR;
+                    c[0] = Color.FOREST;
                 }
             }
         }
