@@ -25,11 +25,15 @@ public class MasteryChallenge implements PostInitializeSubscriber {
 
     public static void initialize() {
         new MasteryChallenge();
-        cardAndRunMap = new HashMap<>();
-        relicAndRunMap = new HashMap<>();
     }
 
     public void receivePostInitialize() {
+        initializeMasteries();
+    }
+
+    public static void initializeMasteries(){
+        cardAndRunMap = new HashMap<>();
+        relicAndRunMap = new HashMap<>();
         Gson gson = new Gson();
 
         FileHandle[] subfolders = Gdx.files.local("runs" + File.separator).list();
