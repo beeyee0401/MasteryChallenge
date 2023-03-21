@@ -19,13 +19,13 @@ public class DeckScreenPatch {
     private static final HashMap<String, Integer> cardCounts = new HashMap<>();
     private static final HashMap<String, String> relics = new HashMap<>();
     private static final Color yellowTextColor = new Color(1f, 0.988f, 0.498f, 1f);
+    private static final Color color = Color.GOLDENROD.cpy();
 
     @SpirePatch(clz = MasterDeckViewScreen.class, method = "render")
     public static class RenderMasteryCandidates {
         @SpirePrefixPatch
         public static void patch(MasterDeckViewScreen __instance, SpriteBatch sb) {
             MasteryTextCardPatch.shouldShow = true;
-            String header = "Mastery Candidates";
 
             if (cards.isEmpty()){
                 for (AbstractCard card : AbstractDungeon.player.masterDeck.group) {
@@ -36,27 +36,24 @@ public class DeckScreenPatch {
                 }
             }
 
-            Color color = Color.GOLDENROD;
             float baseY = Settings.HEIGHT * 0.8f;
             float baseX = 25 * Settings.xScale;
 
             float increment = 30.0f;
-            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, header, baseX, baseY, color);
+            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Mastery Candidates", baseX, baseY, color);
             baseY -= increment;
 
-            if (!cards.isEmpty()){
-                FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Cards", baseX, baseY, color);
-                baseY -= increment;
+            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Cards", baseX, baseY, color);
+            baseY -= increment;
 
-                for (String cardId : cards.keySet()) {
-                    Color textColor = cardCounts.get(cardId) > 1 ? Settings.GREEN_TEXT_COLOR : yellowTextColor;
-                    FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont,
-                            cards.get(cardId) + " (x" + cardCounts.get(cardId) + ")", baseX + 10f, baseY, textColor);
-                    baseY -= increment;
-                }
-
+            for (String cardId : cards.keySet()) {
+                Color textColor = cardCounts.get(cardId) > 1 ? Settings.GREEN_TEXT_COLOR : yellowTextColor;
+                FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont,
+                        cards.get(cardId) + " (x" + cardCounts.get(cardId) + ")", baseX + 10f, baseY, textColor);
                 baseY -= increment;
             }
+
+            baseY -= increment;
 
             if (relics.isEmpty()) {
                 for (AbstractRelic relic : AbstractDungeon.player.relics) {
@@ -66,14 +63,12 @@ public class DeckScreenPatch {
                 }
             }
 
-            if (!relics.isEmpty()){
-                FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Relics", baseX, baseY, color);
-                baseY -= increment;
+            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Relics", baseX, baseY, color);
+            baseY -= increment;
 
-                for (String relicId : relics.keySet()) {
-                    FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, relics.get(relicId), baseX + 10f, baseY, Settings.CREAM_COLOR);
-                    baseY -= increment;
-                }
+            for (String relicId : relics.keySet()) {
+                FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, relics.get(relicId), baseX + 10f, baseY, Settings.CREAM_COLOR);
+                baseY -= increment;
             }
         }
     }
