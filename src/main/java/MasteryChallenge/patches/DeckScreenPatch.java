@@ -13,9 +13,10 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.MasterDeckViewScreen;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class DeckScreenPatch {
-    private static final HashMap<String, String> cards = new HashMap<>();
+    private static final LinkedHashMap<String, String> cards = new LinkedHashMap<>();
     private static final HashMap<String, Integer> cardCounts = new HashMap<>();
     private static final HashMap<String, String> relics = new HashMap<>();
     private static final Color yellowTextColor = new Color(1f, 0.988f, 0.498f, 1f);
