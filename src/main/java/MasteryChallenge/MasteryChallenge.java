@@ -8,6 +8,8 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.screens.stats.RunData;
 import com.google.gson.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.time.Instant;
@@ -16,6 +18,7 @@ import java.util.*;
 
 @SpireInitializer
 public class MasteryChallenge implements PostInitializeSubscriber {
+    private static final Logger logger = LogManager.getLogger(MasteryChallenge.class.getName());
     public static HashMap<String, String> cardAndRunMap;
     public static HashMap<String, String> relicAndRunMap;
 
@@ -51,27 +54,32 @@ public class MasteryChallenge implements PostInitializeSubscriber {
             }
 
             for (FileHandle file : subFolder.list()) {
-                RunData data = gson.fromJson(file.readString(), RunData.class);
-                if (data != null && data.timestamp == null) {
-                    data.timestamp = file.nameWithoutExtension();
-                    String exampleDaysSinceUnixStr = "17586";
-                    boolean assumeDaysSinceUnix = data.timestamp.length() == exampleDaysSinceUnixStr.length();
-                    if (assumeDaysSinceUnix) {
-                        try {
-                            long days = Long.parseLong(data.timestamp);
-                            data.timestamp = Long.toString(days * 86400L);
-                        } catch (NumberFormatException ex) {
-                            data = null;
+                try {
+                    RunData data = gson.fromJson(file.readString(), RunData.class);
+                    if (data != null && data.timestamp == null) {
+                        data.timestamp = file.nameWithoutExtension();
+                        String exampleDaysSinceUnixStr = "17586";
+                        boolean assumeDaysSinceUnix = data.timestamp.length() == exampleDaysSinceUnixStr.length();
+                        if (assumeDaysSinceUnix) {
+                            try {
+                                long days = Long.parseLong(data.timestamp);
+                                data.timestamp = Long.toString(days * 86400L);
+                            } catch (NumberFormatException ex) {
+                                data = null;
+                            }
                         }
                     }
-                }
-                if (data != null){
-                    long seconds = Long.parseLong(data.timestamp);
-                    int year = Instant.ofEpochSecond(seconds).atZone(ZoneId.systemDefault()).getYear();
-                    if (year < 2023){
-                        continue;
+                    if (data != null){
+                        long seconds = Long.parseLong(data.timestamp);
+                        int year = Instant.ofEpochSecond(seconds).atZone(ZoneId.systemDefault()).getYear();
+                        if (year < 2023){
+                            continue;
+                        }
+                        runFiles2023.add(data);
                     }
-                    runFiles2023.add(data);
+                }
+                catch (JsonSyntaxException ex){
+                    logger.info("Failed to load RunData from JSON file: " + file.path());
                 }
             }
         }
