@@ -20,6 +20,7 @@ public class DeckScreenPatch {
     private static final HashMap<String, Integer> cardCounts = new HashMap<>();
     private static final HashMap<String, String> relics = new HashMap<>();
     private static final Color yellowTextColor = new Color(1f, 0.988f, 0.498f, 1f);
+    private static final Color gold = Color.GOLD.cpy();
 
     @SpirePatch(clz = MasterDeckViewScreen.class, method = "render")
     public static class RenderMasteryCandidates {
@@ -40,10 +41,10 @@ public class DeckScreenPatch {
             float baseX = 25 * Settings.xScale;
 
             float increment = 30.0f;
-            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Mastery Candidates", baseX, baseY, Color.GOLDENROD);
+            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Mastery Candidates", baseX, baseY, gold);
             baseY -= increment;
 
-            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Cards", baseX, baseY, Color.GOLDENROD);
+            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Cards", baseX, baseY, gold);
             baseY -= increment;
 
             for (String cardId : cards.keySet()) {
@@ -63,7 +64,7 @@ public class DeckScreenPatch {
                 }
             }
 
-            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Relics", baseX, baseY, Color.GOLDENROD);
+            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Relics", baseX, baseY, gold);
             baseY -= increment;
 
             for (String relicId : relics.keySet()) {
