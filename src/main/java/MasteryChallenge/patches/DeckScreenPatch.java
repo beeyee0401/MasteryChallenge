@@ -44,17 +44,19 @@ public class DeckScreenPatch {
             FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Mastery Candidates", baseX, baseY, gold);
             baseY -= increment;
 
-            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Cards", baseX, baseY, gold);
-            baseY -= increment;
+            if (!cards.isEmpty()){
+                FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Cards", baseX, baseY, gold);
+                baseY -= increment;
 
-            for (String cardId : cards.keySet()) {
-                Color textColor = cardCounts.get(cardId) > 1 ? Settings.GREEN_TEXT_COLOR : yellowTextColor;
-                FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont,
-                        cards.get(cardId) + " (x" + cardCounts.get(cardId) + ")", baseX + 10f, baseY, textColor);
+                for (String cardId : cards.keySet()) {
+                    Color textColor = cardCounts.get(cardId) > 1 ? Settings.GREEN_TEXT_COLOR : yellowTextColor;
+                    FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont,
+                            cards.get(cardId) + " (x" + cardCounts.get(cardId) + ")", baseX + 10f, baseY, textColor);
+                    baseY -= increment;
+                }
+
                 baseY -= increment;
             }
-
-            baseY -= increment;
 
             if (relics.isEmpty()) {
                 for (AbstractRelic relic : AbstractDungeon.player.relics) {
@@ -64,12 +66,14 @@ public class DeckScreenPatch {
                 }
             }
 
-            FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Relics", baseX, baseY, gold);
-            baseY -= increment;
-
-            for (String relicId : relics.keySet()) {
-                FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, relics.get(relicId), baseX + 10f, baseY, Settings.CREAM_COLOR);
+            if (!relics.isEmpty()) {
+                FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, "Relics", baseX, baseY, gold);
                 baseY -= increment;
+
+                for (String relicId : relics.keySet()) {
+                    FontHelper.renderSmartText(sb, FontHelper.tipHeaderFont, relics.get(relicId), baseX + 10f, baseY, Settings.CREAM_COLOR);
+                    baseY -= increment;
+                }
             }
         }
     }
