@@ -9,6 +9,9 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
+import com.megacrit.cardcrawl.cards.curses.Pride;
+import com.megacrit.cardcrawl.cards.optionCards.*;
+import com.megacrit.cardcrawl.cards.tempCards.*;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
@@ -18,15 +21,34 @@ import com.megacrit.cardcrawl.screens.CardRewardScreen;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class MasteryTextCardPatch {
     public static boolean shouldShow = true;
+    public static final HashSet<String> uncollectibleCards = new HashSet<>(Arrays.asList(
+            Pride.ID,
+            Beta.ID,
+            Expunger.ID,
+            Insight.ID,
+            Miracle.ID,
+            Omega.ID,
+            Safety.ID,
+            Shiv.ID,
+            Smite.ID,
+            ThroughViolence.ID,
+            BecomeAlmighty.ID,
+            ChooseCalm.ID,
+            ChooseWrath.ID,
+            FameAndFortune.ID,
+            LiveForever.ID
+    ));
 
     @SpirePatch2(clz = AbstractCard.class, method = "renderTitle", paramtypez = {SpriteBatch.class})
     public static class RenderTitlePatch {
         @SpirePostfixPatch
         public static void patch(AbstractCard __instance, SpriteBatch sb) {
-            if (shouldShow){
+            if (shouldShow && !uncollectibleCards.contains(__instance.cardID) && __instance.type != AbstractCard.CardType.STATUS){
                 boolean isMastered = MasteryChallenge.cardAndRunMap.containsKey(__instance.cardID);
                 if (!isMastered){
                     float xPos, yPos, offsetY;
