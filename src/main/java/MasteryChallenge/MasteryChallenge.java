@@ -1,9 +1,12 @@
 package MasteryChallenge;
 
+import MasteryChallenge.config.Config;
+import MasteryChallenge.config.ConfigMenu;
 import basemod.BaseMod;
 import basemod.interfaces.PostInitializeSubscriber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.screens.stats.RunData;
@@ -14,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @SpireInitializer
@@ -21,17 +25,28 @@ public class MasteryChallenge implements PostInitializeSubscriber {
     private static final Logger logger = LogManager.getLogger(MasteryChallenge.class.getName());
     public static HashMap<String, String> cardAndRunMap;
     public static HashMap<String, String> relicAndRunMap;
+    public static Config config;
 
     public MasteryChallenge() {
         BaseMod.subscribe(this);
     }
 
+    @SuppressWarnings("unused")
     public static void initialize() {
         new MasteryChallenge();
     }
 
     public void receivePostInitialize() {
+        config  = new Config();
         initializeMasteries();
+
+        BaseMod.registerModBadge(
+                new Texture("images/icon.png"),
+                "Baalorlord's Mastery Challenge",
+                "beeyee",
+                "For Baalorlord's 2023 Challenge of Mastering cards and relics\n\nInspired by Monster Train, we master a relic or card by beating the game while owning a relic or 2 copies of a card. Yes, this includes Curses!",
+                new ConfigMenu()
+        );
     }
 
     public static void initializeMasteries(){
@@ -40,7 +55,19 @@ public class MasteryChallenge implements PostInitializeSubscriber {
         Gson gson = new Gson();
 
         FileHandle[] subfolders = Gdx.files.local("runs" + File.separator).list();
-        ArrayList<RunData> runFiles2023 = new ArrayList<>();
+        ArrayList<RunData> masteryRunFiles = new ArrayList<>();
+        int minAscLevel = MasteryChallenge.config.getIntKeyOrSetDefault(Config.minAscLevel, 20);
+        int startDay = config.getIntKeyOrSetDefault(Config.startDay, 1);
+        int startMonth = config.getIntKeyOrSetDefault(Config.startMonth, 1);
+        int startYear = config.getIntKeyOrSetDefault(Config.startYear, 2023);
+        ZonedDateTime startDate;
+        try {
+            startDate = ZonedDateTime.of(startYear, startMonth, startDay, 0, 0, 0, 0, ZoneId.systemDefault());
+        } catch (Exception ex) {
+            config.setIntKey(Config.startDay, 1);
+            startDate = ZonedDateTime.of(startYear, startMonth, 1, 0, 0, 0, 0, ZoneId.systemDefault());
+        }
+
         for (FileHandle subFolder : subfolders) {
             if (CardCrawlGame.saveSlot == 0) {
                 // Profile 0 runs, which has no prefix
@@ -71,11 +98,11 @@ public class MasteryChallenge implements PostInitializeSubscriber {
                     }
                     if (data != null){
                         long seconds = Long.parseLong(data.timestamp);
-                        int year = Instant.ofEpochSecond(seconds).atZone(ZoneId.systemDefault()).getYear();
-                        if (year < 2023){
+                        ZonedDateTime runDate = Instant.ofEpochSecond(seconds).atZone(ZoneId.systemDefault());
+                        if (runDate.isBefore(startDate)){
                             continue;
                         }
-                        runFiles2023.add(data);
+                        masteryRunFiles.add(data);
                     }
                 }
                 catch (JsonSyntaxException ex){
@@ -84,10 +111,10 @@ public class MasteryChallenge implements PostInitializeSubscriber {
             }
         }
 
-        runFiles2023.sort(RunData.orderByTimestampDesc);
-        Collections.reverse(runFiles2023);
-        for (RunData data : runFiles2023) {
-            if (data.ascension_level != 20) {
+        masteryRunFiles.sort(RunData.orderByTimestampDesc);
+        Collections.reverse(masteryRunFiles);
+        for (RunData data : masteryRunFiles) {
+            if (data.ascension_level < minAscLevel) {
                 continue;
             }
 
