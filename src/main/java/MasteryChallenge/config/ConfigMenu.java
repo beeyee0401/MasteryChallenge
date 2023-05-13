@@ -49,8 +49,8 @@ public class ConfigMenu extends ModPanel implements DropdownMenuListener {
         int ascIndex = ArrayUtils.indexOf(ascLevels, String.valueOf(MasteryChallenge.config.getIntKeyOrSetDefault(Config.minAscLevel, 20)));
         ascDropdown.setSelectedIndex(ascIndex);
 
-        refreshButton = new ModLabeledButton("Refresh", 400.0F * Settings.xScale,
-                375 * Settings.yScale, Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,
+        refreshButton = new ModLabeledButton("Refresh", 400.0F, 375,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,
                 null,
                 (button) -> MasteryChallenge.initializeMasteries());
     }
