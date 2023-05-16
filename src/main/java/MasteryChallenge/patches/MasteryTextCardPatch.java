@@ -18,6 +18,7 @@ import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.screens.CardRewardScreen;
+import com.megacrit.cardcrawl.screens.compendium.CardLibraryScreen;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 
 import java.util.ArrayList;
@@ -91,6 +92,7 @@ public class MasteryTextCardPatch {
 
     @SpirePatch2(clz = CardRewardScreen.class, method = "open")
     public static class ShouldTextInCardReward {
+        @SpirePostfixPatch
         public static void Postfix(CardRewardScreen __instance, ArrayList<AbstractCard> cards, RewardItem rItem, String header) {
             shouldShow = true;
         }
@@ -98,7 +100,16 @@ public class MasteryTextCardPatch {
 
     @SpirePatch2(clz = ShopScreen.class, method = "render")
     public static class ShopScreenPatch {
+        @SpirePostfixPatch
         public static void Postfix(ShopScreen __instance, SpriteBatch sb) {
+            shouldShow = true;
+        }
+    }
+
+    @SpirePatch2(clz = CardLibraryScreen.class, method = "render")
+    public static class CardLibraryScreenPatch {
+        @SpirePrefixPatch
+        public static void Prefix(CardLibraryScreen __instance, SpriteBatch sb) {
             shouldShow = true;
         }
     }
