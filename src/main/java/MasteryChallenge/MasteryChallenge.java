@@ -142,8 +142,9 @@ public class MasteryChallenge implements PostInitializeSubscriber {
             cardCounts.put(cardName, cardCounts.getOrDefault(cardName, 0) + 1);
         }
 
+        int cardCount = config.getIntKeyOrSetDefault(Config.cardCount, 2);
         for (String card : cardCounts.keySet()) {
-            if (cardCounts.get(card) >= 2 && !cardAndRunMap.containsKey(card)) {
+            if (cardCounts.get(card) >= cardCount && !cardAndRunMap.containsKey(card)) {
                 cardAndRunMap.put(card, runTimestamp);
             }
         }

@@ -11,6 +11,7 @@ public class Config {
     public static final String startMonth = "startMonth";
     public static final String startYear = "startYear";
     public static final String minAscLevel = "minAscLevel";
+    public static final String cardCount = "cardCount";
 
     public Config() {
         Properties defaults = new Properties();
@@ -18,6 +19,7 @@ public class Config {
         defaults.put(startMonth, 1);
         defaults.put(startYear, 2023);
         defaults.put(minAscLevel, 20);
+        defaults.put(cardCount, 2);
 
         try {
             spireConfig = new SpireConfig("MasteryChallenge", "config", defaults);

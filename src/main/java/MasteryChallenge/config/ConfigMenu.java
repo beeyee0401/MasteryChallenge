@@ -25,6 +25,7 @@ public class ConfigMenu extends ModPanel implements DropdownMenuListener {
     DropdownMenu monthDropdown;
     DropdownMenu yearDropdown;
     DropdownMenu ascDropdown;
+    DropdownMenu cardCountDropdown;
     ModLabeledButton refreshButton;
     public ConfigMenu(){
         super();
@@ -48,6 +49,11 @@ public class ConfigMenu extends ModPanel implements DropdownMenuListener {
         ascDropdown = new DropdownMenu(this, ascLevels, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
         int ascIndex = ArrayUtils.indexOf(ascLevels, String.valueOf(MasteryChallenge.config.getIntKeyOrSetDefault(Config.minAscLevel, 20)));
         ascDropdown.setSelectedIndex(ascIndex);
+
+        String[] cardCountRequirement = IntStream.range(1, 4).mapToObj(String::valueOf).toArray(String[]::new);
+        cardCountDropdown = new DropdownMenu(this, cardCountRequirement, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
+        int cardCountIndex = ArrayUtils.indexOf(cardCountRequirement, String.valueOf(MasteryChallenge.config.getIntKeyOrSetDefault(Config.cardCount, 2)));
+        cardCountDropdown.setSelectedIndex(cardCountIndex);
 
         refreshButton = new ModLabeledButton("Refresh", 400.0F, 375,
                 Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,
@@ -110,6 +116,16 @@ public class ConfigMenu extends ModPanel implements DropdownMenuListener {
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
+                "Minimum Copies of Card:",
+                950.0F * Settings.xScale,
+                675.0F * Settings.yScale,
+                420.0F * Settings.xScale,
+                30.0f * Settings.yScale,
+                Settings.CREAM_COLOR);
+        cardCountDropdown.render(sb,1250.0F * Settings.xScale, 675.0F * Settings.yScale);
+
+        FontHelper.renderSmartText(sb,
+                FontHelper.tipBodyFont,
                 "Minimum Ascension Level:",
                 950.0F * Settings.xScale,
                 750.0F * Settings.yScale,
@@ -126,6 +142,7 @@ public class ConfigMenu extends ModPanel implements DropdownMenuListener {
         yearDropdown.update();
         refreshButton.update();
         ascDropdown.update();
+        cardCountDropdown.update();
 
         if (InputHelper.pressedEscape) {
             BaseMod.modSettingsUp = false;
@@ -155,11 +172,24 @@ public class ConfigMenu extends ModPanel implements DropdownMenuListener {
                 dayDropdown.setSelectedIndex(0);
             }
         } else if (dropdownMenu == monthDropdown){
+//            int startDay = MasteryChallenge.config.getIntKeyOrSetDefault(Config.startDay, 1);
+//            int startYear = MasteryChallenge.config.getIntKeyOrSetDefault(Config.startYear, 2023);
+//            ZonedDateTime startDate;
+//
+//            try {
+//                startDate = ZonedDateTime.of(startYear, Integer.parseInt(s), startDay, 0, 0, 0, 0, ZoneId.systemDefault());
+//                MasteryChallenge.config.setIntKey(Config.startMonth, startDate.getMonthValue());
+//            } catch (Exception ex) {
+//                MasteryChallenge.config.setIntKey(Config.startMonth, 1);
+//                dayDropdown.setSelectedIndex(0);
+//            }
             MasteryChallenge.config.setIntKey(Config.startMonth, Integer.parseInt(s));
         } else if (dropdownMenu == yearDropdown){
             MasteryChallenge.config.setIntKey(Config.startYear, Integer.parseInt(s));
         } else if (dropdownMenu == ascDropdown){
             MasteryChallenge.config.setIntKey(Config.minAscLevel, Integer.parseInt(s));
+        } else if (dropdownMenu == cardCountDropdown){
+            MasteryChallenge.config.setIntKey(Config.cardCount, Integer.parseInt(s));
         }
     }
 }
