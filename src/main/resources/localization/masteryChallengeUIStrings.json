@@ -1,0 +1,19 @@
+{
+  "VictoryScreen2": {
+    "TEXT": [
+      "Proceed",
+      "Floors Climbed",
+      "Bosses Defeated",
+      "Play Time",
+      "Score",
+      "Unlock",
+      "Unlocks Remaining: ",
+      "Unlock Remaining: ",
+      "Enemies Slain",
+      "Elites Killed",
+      "Unspent Gold",
+      "HP Bonus",
+      "Mastery Challenge completed!"
+    ]
+  }
+}

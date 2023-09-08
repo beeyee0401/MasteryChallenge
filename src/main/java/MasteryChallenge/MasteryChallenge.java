@@ -3,29 +3,35 @@ package MasteryChallenge;
 import MasteryChallenge.config.Config;
 import MasteryChallenge.config.ConfigMenu;
 import basemod.BaseMod;
+import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.localization.CharacterStrings;
+import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.screens.stats.RunData;
 import com.google.gson.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 
 @SpireInitializer
-public class MasteryChallenge implements PostInitializeSubscriber {
+public class MasteryChallenge implements PostInitializeSubscriber, EditStringsSubscriber {
     private static final Logger logger = LogManager.getLogger(MasteryChallenge.class.getName());
     public static HashMap<String, String> cardAndRunMap;
     public static HashMap<String, String> relicAndRunMap;
     public static Config config;
+    public static boolean isComplete = false;
+    private static final int allCollectibleCardsCount = 352;
 
     public MasteryChallenge() {
         BaseMod.subscribe(this);
@@ -47,6 +53,16 @@ public class MasteryChallenge implements PostInitializeSubscriber {
                 "For Baalorlord's 2023 Challenge of Mastering cards and relics\n\nInspired by Monster Train, we master a relic or card by beating the game while owning a relic or 2 copies of a card. Yes, this includes Curses!",
                 new ConfigMenu()
         );
+    }
+
+    public void receiveEditStrings() {
+        String charStrings =
+                Gdx.files.internal("localization/masteryChallengeCharacterStrings.json").readString(StandardCharsets.UTF_8.toString());
+        BaseMod.loadCustomStrings(CharacterStrings.class, charStrings);
+
+        String uiStrings =
+                Gdx.files.internal("localization/masteryChallengeUIStrings.json").readString(StandardCharsets.UTF_8.toString());
+        BaseMod.loadCustomStrings(UIStrings.class, uiStrings);
     }
 
     public static void initializeMasteries(){
@@ -147,6 +163,10 @@ public class MasteryChallenge implements PostInitializeSubscriber {
             if (cardCounts.get(card) >= cardCount && !cardAndRunMap.containsKey(card)) {
                 cardAndRunMap.put(card, runTimestamp);
             }
+        }
+
+        if (cardAndRunMap.size() == MasteryChallenge.allCollectibleCardsCount) {
+            isComplete = true;
         }
     }
 }

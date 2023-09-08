@@ -12,6 +12,7 @@ public class Config {
     public static final String startYear = "startYear";
     public static final String minAscLevel = "minAscLevel";
     public static final String cardCount = "cardCount";
+    public static final String hasShownCompleted = "hasShownCompleted";
 
     public Config() {
         Properties defaults = new Properties();
@@ -20,6 +21,7 @@ public class Config {
         defaults.put(startYear, 2023);
         defaults.put(minAscLevel, 20);
         defaults.put(cardCount, 2);
+        defaults.put(hasShownCompleted, false);
 
         try {
             spireConfig = new SpireConfig("MasteryChallenge", "config", defaults);
@@ -48,5 +50,26 @@ public class Config {
 
     public int getIntKey(String key){
         return spireConfig.getInt(key);
+    }
+
+    public void setBoolKey(String key, boolean val){
+        spireConfig.setBool(key, val);
+
+        try {
+            spireConfig.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean getBoolKeyOrSetDefault(String key, boolean defaultValue){
+        if (!spireConfig.has(key)){
+            setBoolKey(key, defaultValue);
+        }
+        return getBoolKey(key);
+    }
+
+    public boolean getBoolKey(String key){
+        return spireConfig.getBool(key);
     }
 }

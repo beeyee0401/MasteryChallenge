@@ -58,7 +58,12 @@ public class ConfigMenu extends ModPanel implements DropdownMenuListener {
         refreshButton = new ModLabeledButton("Refresh", 400.0F, 375,
                 Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,
                 null,
-                (button) -> MasteryChallenge.initializeMasteries());
+                (button) -> {
+                    MasteryChallenge.initializeMasteries();
+                    if (!MasteryChallenge.isComplete){
+                        MasteryChallenge.config.setBoolKey(Config.hasShownCompleted, false);
+                    }
+                });
     }
 
     @Override
@@ -172,18 +177,17 @@ public class ConfigMenu extends ModPanel implements DropdownMenuListener {
                 dayDropdown.setSelectedIndex(0);
             }
         } else if (dropdownMenu == monthDropdown){
-//            int startDay = MasteryChallenge.config.getIntKeyOrSetDefault(Config.startDay, 1);
-//            int startYear = MasteryChallenge.config.getIntKeyOrSetDefault(Config.startYear, 2023);
-//            ZonedDateTime startDate;
-//
-//            try {
-//                startDate = ZonedDateTime.of(startYear, Integer.parseInt(s), startDay, 0, 0, 0, 0, ZoneId.systemDefault());
-//                MasteryChallenge.config.setIntKey(Config.startMonth, startDate.getMonthValue());
-//            } catch (Exception ex) {
-//                MasteryChallenge.config.setIntKey(Config.startMonth, 1);
-//                dayDropdown.setSelectedIndex(0);
-//            }
-            MasteryChallenge.config.setIntKey(Config.startMonth, Integer.parseInt(s));
+            int startDay = MasteryChallenge.config.getIntKeyOrSetDefault(Config.startDay, 1);
+            int startYear = MasteryChallenge.config.getIntKeyOrSetDefault(Config.startYear, 2023);
+            ZonedDateTime startDate;
+
+            try {
+                startDate = ZonedDateTime.of(startYear, Integer.parseInt(s), startDay, 0, 0, 0, 0, ZoneId.systemDefault());
+                MasteryChallenge.config.setIntKey(Config.startMonth, startDate.getMonthValue());
+            } catch (Exception ex) {
+                MasteryChallenge.config.setIntKey(Config.startDay, 1);
+                dayDropdown.setSelectedIndex(0);
+            }
         } else if (dropdownMenu == yearDropdown){
             MasteryChallenge.config.setIntKey(Config.startYear, Integer.parseInt(s));
         } else if (dropdownMenu == ascDropdown){
