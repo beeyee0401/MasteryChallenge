@@ -2,7 +2,7 @@
   "modid": "beeyee_MasteryChallenge",
   "name": "Mastery Challenge",
   "author_list": ["beeyee"],
-  "description": "For Baalorlord's 2023 Challenge of Mastering cards and relics\n\nInspired by Monster Train, we master a relic or card by beating the game while owning a relic or 2 copies of a card. Yes, this includes Curses!\n\nCheck the mod menu for configurable start dates and set the minimum Ascension level for a victory to count!",
+  "description": "For Baalorlord's 2023 Challenge of Mastering cards and relics\n\nInspired by Monster Train, we master a relic or card by beating the game while owning a relic or 2 copies of a card. Yes, this includes Curses!\n\nCheck the mod menu for configurable start dates, set the minimum Ascension level, and required card count for a Mastery to count!",
   "version": "0.0.2",
   "sts_version": "12-18-2022",
   "mts_version": "3.19.0",
